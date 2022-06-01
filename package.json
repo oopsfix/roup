@@ -1,0 +1,30 @@
+{
+  "name": "roup",
+  "version": "1.0.0",
+  "description": "rotorCMS updater",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/oopsfix/roup.git"
+  },
+  "files": [
+      "src/",
+      "bin/"
+  ],
+  "keywords": [
+    "rotorcms",
+    "updater"
+  ],
+  "author": "oopsfix",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oopsfix/roup/issues"
+  },
+  "homepage": "https://github.com/oopsfix/roup#readme",
+  "scripts": {
+    "postinstall": "node install.js"
+  }
+}

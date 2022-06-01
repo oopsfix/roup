@@ -1,0 +1,47 @@
+'use strict';
+
+const roup = require('roup/bin/roup');
+
+const CONFIG = {
+    // Директория местонахождения репозитория с rotorcms
+    pathRotorRepository: 'upgrades',
+    // Последний айди коммита до которого у нас есть обновления
+    lastIdCommit: 'ede524dc9cb4b6f414eded2258699c2451fe53a3',
+    // Директория местонахождения нашего проекта
+    pathProject: './',
+    // Временная директория в которой собираются версии файлов для слияний
+    pathTmpDir: '.roup',
+    // Лог хранения результата обновления
+    log: 'roup.log',
+    // Отслеживаемый контент в репозитории rotorcms
+    trackContents: [
+        'app',
+        'config',
+        'database',
+        'modules',
+        'public',
+        'resources',
+        'routes',
+        'tests',
+        'bootstrap/app.php',
+        '.editorconfig',
+        '.env.example',
+        '.gitattributes',
+        '.gitignore',
+        '.htaccess',
+        '.styleci.yml',
+        '.travis.yml',
+        'artisan',
+        'composer.json',
+        'package.json',
+        'phpunit.xml',
+        'phpcs.xml',
+        'phpstan.neon',
+        'readme.md',
+        'readme_ru.md',
+        'webpack.mix.js',
+        'deploy.php'
+    ]
+};
+
+roup(CONFIG);
