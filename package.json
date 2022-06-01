@@ -1,6 +1,6 @@
 {
   "name": "roup",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "rotorCMS updater",
   "main": "index.js",
   "scripts": {
