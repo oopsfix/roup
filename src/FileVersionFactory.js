@@ -151,20 +151,31 @@ class FileVersionFactory extends EventEmmiter {
         });
     }
     
-    async filterDiffFiles() {
+    async filterDiffFiles(realeseFiles = false) {
         this.emit('statusMessage', 'Starting comparing files');
+        this.result.diffedFiles = 0;
+        
         const diffedFiles = [];
         
         let i = 0;
-        for (const entry of this.listEntries) {
+        for (let entry of this.listEntries) {
             try {
                 this.emit('statusMessage', 'Comparing ' + entry);
                 
-                const res = await this.gitRotor.runGit([
-                    'diff',
-                    entry,
-                    '../' + entry
-                ]);
+                let res = null;
+                if (realeseFiles) {
+                    res = await this.gitProject.runGit([
+                        'diff',
+                        path.join(this.config.pathTmpDir, entry),
+                        entry
+                    ]);
+                } else {
+                    res = await this.gitRotor.runGit([
+                        'diff',
+                        entry,
+                        '../' + entry
+                    ]);
+                }
                 
                 if (res.code === 1) {
                     diffedFiles.push(i);
@@ -205,7 +216,6 @@ class FileVersionFactory extends EventEmmiter {
                 if (exitCode > 0) {
                     this.result.conflictFiles.push(entry);
                 }
-                this.result.copiedFiles.push(entry);
             } catch (err) {
                 throw err;
             }
@@ -220,6 +230,7 @@ class FileVersionFactory extends EventEmmiter {
                     path.join(this.config.pathTmpDir, entry),
                     path.join(this.config.pathProject, entry)
                 );
+                this.result.copiedFiles.push(entry);
             } catch (err) {
                 throw err;
             }
@@ -255,10 +266,12 @@ class FileVersionFactory extends EventEmmiter {
         await this.makeCurrentFiles();
         this.emit('statusMessage', 'Starting merging files');
         await this.makeMergingFiles();
+        this.emit('statusMessage', 'Starting diffing a new files to project');
+        await this.filterDiffFiles(true);
         this.emit('statusMessage', 'Starting copying to project');
         await this.copyingProduction();
         
-        this.result.rotorLastCommit = await this.gitProject.getCommitHead();
+        this.result.rotorLastCommit = await this.gitRotor.getCommitHead();
         
         return this.result;
     }
